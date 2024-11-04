@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@drawable/back_pic"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+
+    <!--   App logo  -->
+    <ImageView
+        android:id="@+id/app_logo"
+        android:contentDescription="none"
+        android:src="@drawable/icon"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"/>
+
+
+    <!--   App Name  -->
+    <TextView
+        android:id="@+id/app_name_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_logo"
+        android:text="Hospital Management App"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
+
+
+    <!--   Register Here  -->
+    <TextView
+        android:id="@+id/login_here_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_name_login"
+        android:text="Please Register Here"
+        android:textStyle="italic"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/login_here_text">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Name -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                android:textColorHint="@color/black"
+                android:background="@color/white">
+
+                <EditText
+                    android:id="@+id/Enter_name_reg"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:hint="Enter your name"
+                    android:autofillHints="none"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:inputType="textPersonName|textCapWords"
+                    android:drawableStart="@drawable/person_png"
+                    android:textColorHint="@color/black"
+                    android:background="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--  -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_Text"
+                android:layout_marginBottom="10dp"
+                app:hintEnabled="false">
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Password -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/email_Text"
+                app:passwordToggleEnabled="true"
+                android:layout_marginBottom="10dp"
+                app:hintEnabled="false"
+                android:textColorHint="@color/black"
+                android:background="@color/white">
+
+                <EditText
+                    android:id="@+id/password_Enter_reg"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:layout_marginTop="1dp"
+                    android:hint="Enter your password"
+                    android:inputType="textPassword"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:drawableStart="@drawable/lock_png"
+                    android:textColorHint="@color/black"
+                    android:background="@color/white"
+                    android:autofillHints="none"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Confirm password -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/co_password_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                android:layout_below="@+id/password_Text"
+                app:hintEnabled="false"
+                android:textColorHint="@color/black"
+                android:background="@color/white">
+
+                <EditText
+                    android:id="@+id/co_password_reg"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/lock_png"
+                    android:drawablePadding="10dp"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/black"
+                    android:hint="Confirm your password"
+                    android:inputType="textPassword"
+                    android:padding="20dp"
+                    android:textColorHint="@color/black"
+                    android:background="@color/white"
+                    android:autofillHints="none"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Register button -->
+            <Button
+                android:id="@+id/register_Button"
+                android:layout_width="200dp"
+                android:layout_height="65dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/co_password_Text"
+                android:textColor="@color/white"
+                android:textSize="23sp"
+                android:text="Register"
+                android:layout_marginTop="25dp"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@drawable/back_pic"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+
+    <!--   App logo  -->
+    <ImageView
+        android:id="@+id/app_logo"
+        android:contentDescription="none"
+        android:src="@drawable/icon"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"/>
+
+
+    <!--   App Name  -->
+    <TextView
+        android:id="@+id/app_name_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_logo"
+        android:text="Hospital Management App"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
+
+
+    <!--   Login Here  -->
+    <TextView
+        android:id="@+id/login_here_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_name_login"
+        android:text="Please Login Here"
+        android:textStyle="italic"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"/>
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_below="@id/login_here_text">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Username -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/Text_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/Enter_username_log"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/person_png"
+                    android:drawablePadding="10dp"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:hint="Enter Username"
+                    android:inputType="textPersonName|textCapWords"
+                    android:autofillHints="none"
+                    android:textColorHint="@color/black"
+                    android:background="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            <!-- Password -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/Text_password"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                android:layout_below="@+id/Text_username"
+                app:hintEnabled="false"
+                android:textColorHint="@color/black"
+                android:background="@color/white">
+
+                <EditText
+                    android:id="@+id/Enter_password_log"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/lock_png"
+                    android:drawablePadding="10dp"
+                    android:hint="Enter your password"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:inputType="textPassword"
+                    android:background="@color/white"
+                    android:autofillHints="none"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            <!-- Forgot password -->
+            <TextView
+                android:id="@+id/forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forgot Password?"
+                android:layout_below="@+id/Text_password"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="12dp"
+                android:padding="10dp"
+                android:textSize="17sp"/>
+
+
+
+            <!-- Login button -->
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/forgot_password"
+                android:textColor="@color/white"
+                android:text="Login"
+                android:textSize="23sp"
+                android:layout_height="65dp"
+                android:layout_marginTop="24dp"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>
