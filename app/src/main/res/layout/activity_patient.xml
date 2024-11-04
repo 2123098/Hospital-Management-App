@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="16dp"
+tools:context=".PatientActivity">
+
+<!-- Patients Name -->
+<EditText
+    android:id="@+id/enter_patient_name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawablePadding="10dp"
+    android:inputType="textPersonName"
+    android:hint="Patient Name"
+    android:autofillHints="none"
+    android:textColorHint="@color/black" />
+
+<!-- Patients Diagnose -->
+<EditText
+    android:id="@+id/enter_diagnose"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawablePadding="10dp"
+    android:inputType="textPersonName"
+    android:hint="Diagnose"
+    android:autofillHints="none"
+    android:textColorHint="@color/black"
+    android:layout_marginTop="16dp" />
+
+<!-- Patients Number -->
+<EditText
+    android:id="@+id/enter_number"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawablePadding="10dp"
+    android:hint="Phone"
+    android:inputType="phone"
+    android:autofillHints="none"
+    android:textColorHint="@color/black"
+    android:layout_marginTop="16dp" />
+
+<!-- Add Patient -->
+<Button
+    android:id="@+id/add_patient_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Add Patient"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="16dp" />
+
+<!-- Update Patient -->
+<Button
+    android:id="@+id/update_patient_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Update Patient"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="16dp" />
+
+<!-- Delete Patient -->
+<Button
+    android:id="@+id/delete_patient_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Delete Patient"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="16dp" />
+
+<!-- Patients List -->
+<ListView
+    android:id="@+id/patient_list_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp" />
+
+</LinearLayout>

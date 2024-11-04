@@ -30,5 +30,15 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
+        // Open Patient Management
+        btn_Manage_Patients = findViewById(R.id.btn_Manage_Patients);
+        btn_Manage_Patients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, DoctorActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
