@@ -35,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
         btn_Manage_Patients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, DoctorActivity.class);
+                Intent intent = new Intent(DashboardActivity.this, PatientActivity.class);
                 startActivity(intent);
             }
         });

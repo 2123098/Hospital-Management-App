@@ -17,7 +17,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    EditText Enter_username_log, Enter_password_log;
+    EditText Enter_username_log, Enter_password_log, display_login_register_result;
     Button login_button;
     DatabaseHelper db;
 
