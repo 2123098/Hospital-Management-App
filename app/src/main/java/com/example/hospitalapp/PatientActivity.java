@@ -79,7 +79,7 @@ public class PatientActivity extends AppCompatActivity {
         // Delete Patient
         delete_patient_btn.setOnClickListener(v -> {
             if (selectedPatientId != -1) {
-                db.deleteDoctor(selectedPatientId);
+                db.deletePatient(selectedPatientId);
                 Toast.makeText(this, "Patient deleted successfully", Toast.LENGTH_SHORT).show();
                 clearInputs();
                 loadPatients(); // Refresh the patient list
