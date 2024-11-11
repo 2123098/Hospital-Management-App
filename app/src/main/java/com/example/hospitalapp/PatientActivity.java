@@ -133,4 +133,5 @@ public class PatientActivity extends AppCompatActivity {
         enter_diagnose.setText("");
         enter_number.setText("");
     }
+
 }
