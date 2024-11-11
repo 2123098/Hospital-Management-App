@@ -17,7 +17,7 @@
         android:id="@+id/specialisation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Specialization" />
+        android:text="Specialisation" />
 
     <TextView
         android:id="@+id/phone"
