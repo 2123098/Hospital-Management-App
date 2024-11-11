@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "hospital_database.db";
     private static final int DATABASE_VERSION = 3;
@@ -68,20 +71,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
-
-    // Inserting Users
-    public boolean insertUser(String username, String password) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_USERNAME, username);
-        contentValues.put(COLUMN_PASSWORD, password);
-        long result = db.insert(TABLE_NAME, null, contentValues);
-        return result != -1;  // return true if data inserted successfully
-    }
-
-
-    // Insert doctor
+    //Doctor Management
+    //Add Doctor
     public void addDoctor(String name, String specialisation, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -92,7 +83,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_DOCTORS, null, values);
         db.close();
     }
-
 
     // Update doctor
     public void updateDoctor(int id, String name, String specialisation, String phone) {
@@ -106,7 +96,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
     // Delete doctor
     public void deleteDoctor(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -116,9 +105,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-
-
-    // Insert patient
+    // Patient Management
+    //Add Patient
     public void addPatient(String name, String diagnose, String number) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -129,7 +117,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_PATIENTS, null, values);
         db.close();
     }
-
 
     // Update patient
     public void updatePatient(int id, String name, String diagnose, String number) {
@@ -143,7 +130,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
     // Delete patient
     public void deletePatient(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -152,32 +138,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
-
-    public boolean checkUser(String username, String password) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USERNAME + "=?  AND " + COLUMN_PASSWORD + "=?", new String[]{username, password});
-        return cursor.getCount() > 0;
-    }
-
-
-
-    // Authenticate User
-    public boolean authenticateUser(String username, String password) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " +
-                COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{username, password});
-
-        if (cursor.getCount() > 0) {
-            cursor.close();
-            return true;
-        } else {
-            cursor.close();
-            return false;
-        }
-    }
-
     // Get all doctors
     public Cursor getAllDoctors() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -185,11 +145,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
-
     // Get all patients
     public Cursor getAllPatients() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_PATIENTS, null);
+    }
+
+
+
+
+
+    // Method to hash passwords using SHA-256
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    // Inserting Users with hashed password
+    public boolean insertUser(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_USERNAME, username);
+
+        // Hash the password before storing it
+        String hashedPassword = hashPassword(password);
+        contentValues.put(COLUMN_PASSWORD, hashedPassword);
+
+        long result = db.insert(TABLE_NAME, null, contentValues);
+        return result != -1;
+    }
+
+
+
+
+    // Authenticate User with hashed password
+    public boolean authenticateUser(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Hash the password before comparison
+        String hashedPassword = hashPassword(password);
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " +
+                COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username, hashedPassword});
+
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
     }
 }

@@ -34,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         login_button = findViewById(R.id.login_button);
 
 
-        //Login into the Dashboard
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,15 +43,20 @@ public class LoginActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
                     Toast.makeText(LoginActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 } else {
-                    boolean checkUser = db.checkUser(username, password);
-                    if (checkUser) {
+                    // Use authenticateUser to check if the credentials are correct
+                    boolean isAuthenticated = db.authenticateUser(username, password);
+                    if (isAuthenticated) {
                         Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                        finish();  // Optional: close the login activity
                     } else {
                         Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
+
+
+
     }
 }
