@@ -57,8 +57,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_DIAGNOSE + " TEXT,"
                 + COLUMN_NUMBER + " TEXT" + ")";
         db.execSQL(CREATE_PATIENTS_TABLE);
-
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
