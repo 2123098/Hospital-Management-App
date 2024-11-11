@@ -102,7 +102,7 @@ public class DoctorActivity extends AppCompatActivity {
         });
     }
 
-    // Load doctors into the ListView
+    // Loading doctors into the ListView
     private void loadDoctors() {
         doctorList.clear(); // Clear old data before loading new
         Cursor cursor = db.getAllDoctors();
