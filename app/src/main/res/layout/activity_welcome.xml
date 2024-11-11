@@ -47,7 +47,6 @@
         android:layout_below="@id/app_name_welcome"/>
 
 
-
     <!-- Register button -->
     <Button
         android:id="@+id/registerButton_welcome"
