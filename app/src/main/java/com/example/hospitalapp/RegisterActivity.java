@@ -31,7 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
         register_Button = findViewById(R.id.register_Button);
 
 
-
         //Store Registered User to the Database
         register_Button.setOnClickListener(new View.OnClickListener() {
             @Override

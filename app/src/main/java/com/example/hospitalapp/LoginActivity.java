@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         db = new DatabaseHelper(this);
         Enter_username_log = findViewById(R.id.Enter_username_log);
         Enter_password_log = findViewById(R.id.Enter_password_log);
