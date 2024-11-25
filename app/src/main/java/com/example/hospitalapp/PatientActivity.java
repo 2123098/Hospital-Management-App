@@ -2,6 +2,7 @@ package com.example.hospitalapp;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,36 +36,34 @@ public class PatientActivity extends AppCompatActivity {
         update_patient_btn = findViewById(R.id.update_patient_btn);
         delete_patient_btn = findViewById(R.id.delete_patient_btn);
 
-        patientList = new ArrayList<>();  // Initialise patientList
+        patientList = new ArrayList<>();
 
         // Set the adapter for the ListView
         patientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, patientList);
         patient_list_view.setAdapter(patientAdapter);
 
-        loadPatients();  // Load the patient list into the ListView
+        loadPatients();
 
         // Add Patient
         add_patient_btn.setOnClickListener(v -> {
-            String name = enter_patient_name.getText().toString();
-            String diagnose = enter_diagnose.getText().toString();
-            String number = enter_number.getText().toString();
+            if (validateInputs()) {
+                String name = enter_patient_name.getText().toString().trim();
+                String diagnose = enter_diagnose.getText().toString().trim();
+                String number = enter_number.getText().toString().trim();
 
-            if (!name.isEmpty() && !diagnose.isEmpty() && !number.isEmpty()) {
                 db.addPatient(name, diagnose, number);
                 Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show();
                 clearInputs();
                 loadPatients();
-            } else {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             }
         });
 
         // Update Patient
         update_patient_btn.setOnClickListener(v -> {
-            if (selectedPatientId != -1) {
-                String name = enter_patient_name.getText().toString();
-                String diagnose = enter_diagnose.getText().toString();
-                String number = enter_number.getText().toString();
+            if (selectedPatientId != -1 && validateInputs()) {
+                String name = enter_patient_name.getText().toString().trim();
+                String diagnose = enter_diagnose.getText().toString().trim();
+                String number = enter_number.getText().toString().trim();
 
                 db.updatePatient(selectedPatientId, name, diagnose, number);
                 Toast.makeText(this, "Patient updated successfully", Toast.LENGTH_SHORT).show();
@@ -82,14 +81,14 @@ public class PatientActivity extends AppCompatActivity {
                 db.deletePatient(selectedPatientId);
                 Toast.makeText(this, "Patient deleted successfully", Toast.LENGTH_SHORT).show();
                 clearInputs();
-                loadPatients(); // Refresh the patient list
-                selectedPatientId = -1; // Reset after delete
+                loadPatients();
+                selectedPatientId = -1;
             } else {
                 Toast.makeText(this, "Please select a patient to delete", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Handle ListView item click for selecting a patient to update or delete
+        // Handle ListView item click for selecting a patient
         patient_list_view.setOnItemClickListener((parent, view, position, id) -> {
             Cursor cursor = db.getAllPatients();
             if (cursor.moveToPosition(position)) {
@@ -104,34 +103,50 @@ public class PatientActivity extends AppCompatActivity {
 
     // Load patients into the ListView
     private void loadPatients() {
-        patientList.clear(); // Clear old data before loading new
+        patientList.clear();
         Cursor cursor = db.getAllPatients();
         if (cursor.moveToFirst()) {
-            int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_NAME);
-            int diagnoseIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_DIAGNOSE);
-            int numberIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_NUMBER);
-
             do {
-                String patientName = cursor.getString(nameIndex);
-                String diagnose = cursor.getString(diagnoseIndex);
-                String number = cursor.getString(numberIndex);
+                String patientName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_NAME));
+                String diagnose = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DIAGNOSE));
+                String number = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NUMBER));
 
-                // Add patients data to list (format: PatientName - Diagnose - Number)
+                // Adding patients details to list
                 patientList.add(patientName + " - " + diagnose + " - " + number);
 
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        // Notify adapter of data change
+        // Notify adapter of data changes
         patientAdapter.notifyDataSetChanged();
     }
 
-    // Clear input fields after adding, updating, or deleting a patient
+    // Validate user inputs
+    private boolean validateInputs() {
+        String name = enter_patient_name.getText().toString().trim();
+        String diagnose = enter_diagnose.getText().toString().trim();
+        String number = enter_number.getText().toString().trim();
+
+        if (TextUtils.isEmpty(name)) {
+            enter_patient_name.setError("Patient name is required");
+            return false;
+        }
+        if (TextUtils.isEmpty(diagnose)) {
+            enter_diagnose.setError("Diagnose is required");
+            return false;
+        }
+        if (TextUtils.isEmpty(number) || !number.matches("\\d{10}")) {
+            enter_number.setError("Valid 10-digit phone number is required");
+            return false;
+        }
+        return true;
+    }
+
+    // Clear input fields
     private void clearInputs() {
         enter_patient_name.setText("");
         enter_diagnose.setText("");
         enter_number.setText("");
     }
-
 }
