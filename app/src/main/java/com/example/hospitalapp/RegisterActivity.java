@@ -8,21 +8,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
-
 
     EditText Enter_name_reg, password_Enter_reg, co_password_reg;
     Button register_Button;
     DatabaseHelper db;
 
+    //The password must be at least 6 characters long
+    private static final int MIN_PASSWORD_LENGTH = 6;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
 
         db = new DatabaseHelper(this);
         Enter_name_reg = findViewById(R.id.Enter_name_reg);
@@ -30,8 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         co_password_reg = findViewById(R.id.co_password_reg);
         register_Button = findViewById(R.id.register_Button);
 
-
-        //Store Registered User to the Database
+        //Storing Registered User to the Database
         register_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,18 +38,31 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = password_Enter_reg.getText().toString();
                 String confirmPassword = co_password_reg.getText().toString();
 
+                //Checking for empty fields
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
                     Toast.makeText(RegisterActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
-                } else if (!password.equals(confirmPassword)) {
+                    return;
+                }
+
+                //Checking password length
+                if (password.length() < MIN_PASSWORD_LENGTH) {
+                    Toast.makeText(RegisterActivity.this, "Password must be at least " + MIN_PASSWORD_LENGTH + " characters long", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //Checking if passwords match
+                if (!password.equals(confirmPassword)) {
                     Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //Inserting users into the database
+                boolean insert = db.insertUser(username, password);
+                if (insert) {
+                    Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 } else {
-                    boolean insert = db.insertUser(username, password);
-                    if (insert) {
-                        Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                    } else {
-                        Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
