@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                //Authenticating user
+                //Authenticating users
                 boolean isAuthenticated = db.authenticateUser(username, password);
                 if (isAuthenticated) {
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();

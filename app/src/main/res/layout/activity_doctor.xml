@@ -1,78 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".DoctorActivity">
+    android:fillViewport="true">
 
-    <!-- Doctors Name -->
-    <EditText
-        android:id="@+id/enter_doctor_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="10dp"
-        android:inputType="textPersonName"
-        android:hint="Doctor Name"
-        android:autofillHints="none"
-        android:textColorHint="@color/black" />
+        android:orientation="vertical">
 
-    <!-- Doctors Specialisation -->
-    <EditText
-        android:id="@+id/enter_spec"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="10dp"
-        android:inputType="textPersonName"
-        android:hint="Specialisation"
-        android:autofillHints="none"
-        android:textColorHint="@color/black"
-        android:layout_marginTop="16dp" />
+        <!-- Doctor's Name -->
+        <EditText
+            android:id="@+id/enter_doctor_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Doctor Name"
+            android:inputType="textPersonName" />
 
-    <!-- Doctors Number -->
-    <EditText
-        android:id="@+id/enter_phone_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="10dp"
-        android:hint="Phone"
-        android:inputType="phone"
-        android:autofillHints="none"
-        android:textColorHint="@color/black"
-        android:layout_marginTop="16dp" />
+        <!-- Specialisation -->
+        <EditText
+            android:id="@+id/enter_spec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Specialisation"
+            android:inputType="text" />
 
-    <!-- Add Doctor -->
-    <Button
-        android:id="@+id/add_doctor_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Doctor"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
+        <!-- Phone Number -->
+        <EditText
+            android:id="@+id/enter_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone" />
 
-    <!-- Update Doctor -->
-    <Button
-        android:id="@+id/update_doctor_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Update Doctor"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-    <!-- Delete Doctor -->
-    <Button
-        android:id="@+id/delete_doctor_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete Doctor"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
+            <Button
+                android:id="@+id/add_doctor_btn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="Add Doctor" />
 
-    <!-- Doctors List -->
-    <ListView
-        android:id="@+id/doctor_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+            <Button
+                android:id="@+id/update_doctor_btn"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="Update Doctor" />
+
+            <Button
+                android:id="@+id/delete_doctor_btn"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="Delete Doctor" />
+        </LinearLayout>
+
+        <!-- Doctors List -->
+        <ListView
+            android:id="@+id/doctor_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>
