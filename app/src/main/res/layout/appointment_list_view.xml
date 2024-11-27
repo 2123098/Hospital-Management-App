@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@android:color/white"
+    android:layout_marginBottom="5dp"
+    android:elevation="2dp">
+
+    <!-- Doctor Information -->
+    <TextView
+        android:id="@+id/tvDoctorInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Doctor: Dr. John Doe (ID: 1)"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Patient Information -->
+    <TextView
+        android:id="@+id/tvPatientInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Patient: Jane Smith (ID: 2)"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:fontFamily="sans-serif" />
+
+    <!-- Appointment Date -->
+    <TextView
+        android:id="@+id/tvAppointmentDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date: 2024-12-01"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray" />
+
+    <!-- Appointment Time -->
+    <TextView
+        android:id="@+id/tvAppointmentTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Time: 10:30 AM"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray" />
+
+</LinearLayout>

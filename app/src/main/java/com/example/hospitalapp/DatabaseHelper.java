@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "hospital_database.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Creating User table
     private static final String TABLE_NAME = "users";
@@ -34,6 +34,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PATIENT_NAME = "name";
     public static final String COLUMN_DIAGNOSE = "diagnose";
     public static final String COLUMN_NUMBER = "number";
+
+
+    // Creating Appointments Table
+    public static final String TABLE_APPOINTMENTS = "appointments";
+    public static final String COLUMN_APPOINTMENT_ID = "id";
+    public static final String COLUMN_APPOINTMENT_DOCTOR_ID = "doctor_id";
+    public static final String COLUMN_APPOINTMENT_PATIENT_ID = "patient_id";
+    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_TIME = "time";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,6 +69,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_DIAGNOSE + " TEXT,"
                 + COLUMN_NUMBER + " TEXT" + ")";
         db.execSQL(CREATE_PATIENTS_TABLE);
+
+
+        String CREATE_APPOINTMENTS_TABLE = "CREATE TABLE " + TABLE_APPOINTMENTS + "("
+                + COLUMN_APPOINTMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_APPOINTMENT_DOCTOR_ID + " INTEGER,"
+                + COLUMN_APPOINTMENT_PATIENT_ID + " INTEGER,"
+                + COLUMN_DATE + " TEXT,"
+                + COLUMN_TIME + " TEXT,"
+                + "FOREIGN KEY (" + COLUMN_APPOINTMENT_DOCTOR_ID + ") REFERENCES " + TABLE_DOCTORS + "(" + COLUMN_DOCTOR_ID + "),"
+                + "FOREIGN KEY (" + COLUMN_APPOINTMENT_PATIENT_ID + ") REFERENCES " + TABLE_PATIENTS + "(" + COLUMN_PATIENT_ID + "))";
+        db.execSQL(CREATE_APPOINTMENTS_TABLE);
     }
 
 
@@ -68,6 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCTORS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PATIENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_APPOINTMENTS);
         onCreate(db);
     }
 
@@ -205,5 +226,82 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean result = cursor.getCount() > 0;
         cursor.close();
         return result;
+    }
+
+    // Add Appointment
+    public long addAppointment(int doctorId, int patientId, String date, String time) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Check for scheduling conflicts
+        String query = "SELECT * FROM " + TABLE_APPOINTMENTS +
+                " WHERE " + COLUMN_APPOINTMENT_DOCTOR_ID + " = ? AND " +
+                COLUMN_DATE + " = ? AND " + COLUMN_TIME + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(doctorId), date, time});
+
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return -1; // Conflict found
+        }
+        cursor.close();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_APPOINTMENT_DOCTOR_ID, doctorId);
+        values.put(COLUMN_APPOINTMENT_PATIENT_ID, patientId);
+        values.put(COLUMN_DATE, date);
+        values.put(COLUMN_TIME, time);
+
+        long result = db.insert(TABLE_APPOINTMENTS, null, values);
+        db.close();
+        return result;
+    }
+
+    // Delete Appointment
+    public void deleteAppointment(int appointmentId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_APPOINTMENTS, COLUMN_APPOINTMENT_ID + " = ?", new String[]{String.valueOf(appointmentId)});
+        db.close();
+    }
+
+    // Get All Appointments
+    public Cursor getAppointments() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT a." + COLUMN_APPOINTMENT_ID + ", " +
+                "d." + COLUMN_DOCTOR_NAME + " AS doctor_name, " +
+                "p." + COLUMN_PATIENT_NAME + " AS patient_name, " +
+                "a." + COLUMN_DATE + ", a." + COLUMN_TIME +
+                " FROM " + TABLE_APPOINTMENTS + " a " +
+                "JOIN " + TABLE_DOCTORS + " d ON a." + COLUMN_APPOINTMENT_DOCTOR_ID + " = d." + COLUMN_DOCTOR_ID + " " +
+                "JOIN " + TABLE_PATIENTS + " p ON a." + COLUMN_APPOINTMENT_PATIENT_ID + " = p." + COLUMN_PATIENT_ID;
+        return db.rawQuery(query, null);
+    }
+
+    // Helper to get doctor ID by name
+    public int getDoctorIdByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_DOCTORS, new String[]{COLUMN_DOCTOR_ID},
+                COLUMN_DOCTOR_NAME + " = ?", new String[]{name},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(COLUMN_DOCTOR_ID));
+            cursor.close();
+            return id;
+        }
+        return -1; // Not found
+    }
+
+    // Helper to get patient ID by name
+    public int getPatientIdByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_PATIENTS, new String[]{COLUMN_PATIENT_ID},
+                COLUMN_PATIENT_NAME + " = ?", new String[]{name},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(COLUMN_PATIENT_ID));
+            cursor.close();
+            return id;
+        }
+        return -1; // Not found
     }
 }

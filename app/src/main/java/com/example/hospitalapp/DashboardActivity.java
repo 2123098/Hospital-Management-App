@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class DashboardActivity extends AppCompatActivity {
 
 
-    Button btn_Manage_Doctors, btn_Manage_Patients, btn_schedule, btn_view_appointments;
+    Button btn_Manage_Doctors, btn_Manage_Patients, btn_schedule_appointment, btn_view_appointments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,20 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        // Open Appointment Management
+        btn_schedule_appointment = findViewById(R.id.btn_schedule_appointment);
+        btn_schedule_appointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, AppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
     }
 }
