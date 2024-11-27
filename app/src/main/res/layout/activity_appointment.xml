@@ -1,99 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".AppointmentActivity">
-
-    <!-- Doctor Name Input -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Doctor Name"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp" />
+    android:padding="16dp">
 
     <EditText
         android:id="@+id/doctorIdInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Doctor Name"
-        android:importantForAccessibility="yes" />
-
-    <!-- Patient Name Input -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Patient Name"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp" />
+        android:hint="Doctor Name"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/patientIdInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Patient Name"
-        android:importantForAccessibility="yes" />
-
-    <!-- Appointment Date -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Appointment Date"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp" />
+        android:hint="Patient Name"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/dateInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="YYYY-MM-DD"
-        android:importantForAccessibility="yes" />
-
-    <!-- Appointment Time -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Appointment Time"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp" />
+        android:hint="Select Date"
+        android:focusable="false"
+        android:clickable="true" />
 
     <EditText
         android:id="@+id/timeInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="HH:MM"
-        android:importantForAccessibility="yes" />
+        android:hint="Select Time"
+        android:focusable="false"
+        android:clickable="true" />
 
-    <!-- Buttons -->
     <Button
         android:id="@+id/scheduleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Schedule Appointment"
-        android:layout_marginTop="20dp" />
+        android:text="Schedule Appointment" />
 
     <Button
         android:id="@+id/deleteAppointmentButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Delete Appointment"
-        android:layout_marginTop="10dp" />
-
-    <!-- Appointment List -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scheduled Appointments"
-        android:textSize="18sp"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="8dp" />
 
     <ListView
         android:id="@+id/appointmentListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp" />
+        android:layout_marginTop="16dp" />
 </LinearLayout>
