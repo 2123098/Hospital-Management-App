@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 
 public class PatientActivity extends AppCompatActivity {
@@ -28,23 +30,23 @@ public class PatientActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        patient_list_view = findViewById(R.id.patient_list_view);
+        // Initialize UI components
         enter_patient_name = findViewById(R.id.enter_patient_name);
         enter_diagnose = findViewById(R.id.enter_diagnose);
         enter_number = findViewById(R.id.enter_number);
         add_patient_btn = findViewById(R.id.add_patient_btn);
         update_patient_btn = findViewById(R.id.update_patient_btn);
         delete_patient_btn = findViewById(R.id.delete_patient_btn);
+        patient_list_view = findViewById(R.id.patient_list_view);
 
+        // Setup ListView and Adapter
         patientList = new ArrayList<>();
-
-        // Set the adapter for the ListView
         patientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, patientList);
         patient_list_view.setAdapter(patientAdapter);
 
         loadPatients();
 
-        // Add Patient
+        // Button listeners
         add_patient_btn.setOnClickListener(v -> {
             if (validateInputs()) {
                 String name = enter_patient_name.getText().toString().trim();
@@ -58,7 +60,6 @@ public class PatientActivity extends AppCompatActivity {
             }
         });
 
-        // Update Patient
         update_patient_btn.setOnClickListener(v -> {
             if (selectedPatientId != -1 && validateInputs()) {
                 String name = enter_patient_name.getText().toString().trim();
@@ -71,11 +72,10 @@ public class PatientActivity extends AppCompatActivity {
                 loadPatients();
                 selectedPatientId = -1;
             } else {
-                Toast.makeText(this, "Please select a patient to update", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Select a patient to update", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Delete Patient
         delete_patient_btn.setOnClickListener(v -> {
             if (selectedPatientId != -1) {
                 db.deletePatient(selectedPatientId);
@@ -84,11 +84,10 @@ public class PatientActivity extends AppCompatActivity {
                 loadPatients();
                 selectedPatientId = -1;
             } else {
-                Toast.makeText(this, "Please select a patient to delete", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Select a patient to delete", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Handle ListView item click for selecting a patient
         patient_list_view.setOnItemClickListener((parent, view, position, id) -> {
             Cursor cursor = db.getAllPatients();
             if (cursor.moveToPosition(position)) {
@@ -101,49 +100,41 @@ public class PatientActivity extends AppCompatActivity {
         });
     }
 
-    // Load patients into the ListView
     private void loadPatients() {
         patientList.clear();
         Cursor cursor = db.getAllPatients();
         if (cursor.moveToFirst()) {
             do {
-                String patientName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_NAME));
-                String diagnose = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DIAGNOSE));
-                String number = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NUMBER));
-
-                // Adding patients details to list
-                patientList.add(patientName + " - " + diagnose + " - " + number);
-
+                String patientDetails = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_NAME)) +
+                        " - " + cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DIAGNOSE)) +
+                        " - " + cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NUMBER));
+                patientList.add(patientDetails);
             } while (cursor.moveToNext());
         }
         cursor.close();
-
-        // Notify adapter of data changes
         patientAdapter.notifyDataSetChanged();
     }
 
-    // Validate user inputs
     private boolean validateInputs() {
         String name = enter_patient_name.getText().toString().trim();
         String diagnose = enter_diagnose.getText().toString().trim();
         String number = enter_number.getText().toString().trim();
 
         if (TextUtils.isEmpty(name)) {
-            enter_patient_name.setError("Patient name is required");
+            enter_patient_name.setError("Name is required");
             return false;
         }
         if (TextUtils.isEmpty(diagnose)) {
-            enter_diagnose.setError("Diagnose is required");
+            enter_diagnose.setError("Diagnosis is required");
             return false;
         }
         if (TextUtils.isEmpty(number) || !number.matches("\\d{10}")) {
-            enter_number.setError("Valid 10-digit phone number is required");
+            enter_number.setError("Enter a valid 10-digit phone number");
             return false;
         }
         return true;
     }
 
-    // Clear input fields
     private void clearInputs() {
         enter_patient_name.setText("");
         enter_diagnose.setText("");
