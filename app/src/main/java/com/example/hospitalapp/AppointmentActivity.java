@@ -1,5 +1,7 @@
 package com.example.hospitalapp;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AppointmentActivity extends AppCompatActivity {
 
@@ -102,6 +105,41 @@ public class AppointmentActivity extends AppCompatActivity {
             }
             cursor.close();
         });
+
+        // Date input listener
+        dateInput.setOnClickListener(v -> {
+            // Get the current date
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            // Show DatePickerDialog
+            new DatePickerDialog(AppointmentActivity.this,
+                    (view, year1, monthOfYear, dayOfMonth) -> {
+                        // Format the selected date and set it to the EditText
+                        String formattedDate = String.format("%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year1);
+                        dateInput.setText(formattedDate);
+                    }, year, month, day).show();
+        });
+
+        // Time input listener
+        timeInput.setOnClickListener(v -> {
+            // Get the current time
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            // Show TimePickerDialog
+            new TimePickerDialog(AppointmentActivity.this,
+                    (view, hourOfDay, minute1) -> {
+                        // Format the selected time and set it to the EditText
+                        String formattedTime = String.format("%02d:%02d", hourOfDay, minute1);
+                        timeInput.setText(formattedTime);
+                    }, hour, minute, true).show();
+        });
+
+
     }
 
     private boolean validateInputs() {
