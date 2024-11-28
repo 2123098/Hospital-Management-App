@@ -33,7 +33,7 @@ public class AppointmentActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        // Initialize UI
+        // Initialize UI components
         doctorIdInput = findViewById(R.id.doctorIdInput);
         patientIdInput = findViewById(R.id.patientIdInput);
         dateInput = findViewById(R.id.dateInput);
@@ -42,14 +42,14 @@ public class AppointmentActivity extends AppCompatActivity {
         deleteAppointmentButton = findViewById(R.id.deleteAppointmentButton);
         appointmentListView = findViewById(R.id.appointmentListView);
 
-        // Appointment list setup
+        // Initialize appointment list and adapter
         appointmentList = new ArrayList<>();
         appointmentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, appointmentList);
         appointmentListView.setAdapter(appointmentAdapter);
 
         loadAppointments();
 
-        // Schedule appointment
+        // Schedule Appointment
         scheduleButton.setOnClickListener(v -> {
             if (validateInputs()) {
                 String doctorName = doctorIdInput.getText().toString().trim();
@@ -57,6 +57,7 @@ public class AppointmentActivity extends AppCompatActivity {
                 String date = dateInput.getText().toString().trim();
                 String time = timeInput.getText().toString().trim();
 
+                // Get doctor and patient IDs
                 int doctorId = db.getDoctorIdByName(doctorName);
                 int patientId = db.getPatientIdByName(patientName);
 
@@ -65,6 +66,7 @@ public class AppointmentActivity extends AppCompatActivity {
                     return;
                 }
 
+                // Add appointment
                 long result = db.addAppointment(doctorId, patientId, date, time);
                 if (result != -1) {
                     Toast.makeText(this, "Appointment scheduled successfully", Toast.LENGTH_SHORT).show();
@@ -76,7 +78,7 @@ public class AppointmentActivity extends AppCompatActivity {
             }
         });
 
-        // Delete appointment
+        // Delete Appointment
         deleteAppointmentButton.setOnClickListener(v -> {
             if (selectedAppointmentId != -1) {
                 db.deleteAppointment(selectedAppointmentId);
@@ -88,7 +90,7 @@ public class AppointmentActivity extends AppCompatActivity {
             }
         });
 
-        // Handle appointment selection
+        // Appointment selection for editing or deletion
         appointmentListView.setOnItemClickListener((parent, view, position, id) -> {
             Cursor cursor = db.getAppointments();
             if (cursor.moveToPosition(position)) {
@@ -106,40 +108,32 @@ public class AppointmentActivity extends AppCompatActivity {
             cursor.close();
         });
 
-        // Date input listener
+        // Date picker dialog for date input
         dateInput.setOnClickListener(v -> {
-            // Get the current date
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-            // Show DatePickerDialog
             new DatePickerDialog(AppointmentActivity.this,
                     (view, year1, monthOfYear, dayOfMonth) -> {
-                        // Format the selected date and set it to the EditText
                         String formattedDate = String.format("%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year1);
                         dateInput.setText(formattedDate);
                     }, year, month, day).show();
         });
 
-        // Time input listener
+        // Time picker dialog for time input
         timeInput.setOnClickListener(v -> {
-            // Get the current time
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
 
-            // Show TimePickerDialog
             new TimePickerDialog(AppointmentActivity.this,
                     (view, hourOfDay, minute1) -> {
-                        // Format the selected time and set it to the EditText
                         String formattedTime = String.format("%02d:%02d", hourOfDay, minute1);
                         timeInput.setText(formattedTime);
                     }, hour, minute, true).show();
         });
-
-
     }
 
     private boolean validateInputs() {

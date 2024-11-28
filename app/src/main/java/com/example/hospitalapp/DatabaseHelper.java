@@ -3,6 +3,7 @@ package com.example.hospitalapp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -19,7 +20,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_PASSWORD = "password";
 
-
     // Creating Doctor Table
     public static final String TABLE_DOCTORS = "doctors";
     public static final String COLUMN_DOCTOR_ID = "id";
@@ -27,14 +27,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_SPECIALISATION = "specialisation";
     public static final String COLUMN_PHONE = "phone";
 
-
     // Creating Patient Table
     public static final String TABLE_PATIENTS = "patients";
     public static final String COLUMN_PATIENT_ID = "id";
     public static final String COLUMN_PATIENT_NAME = "name";
     public static final String COLUMN_DIAGNOSE = "diagnose";
     public static final String COLUMN_NUMBER = "number";
-
 
     // Creating Appointments Table
     public static final String TABLE_APPOINTMENTS = "appointments";
@@ -70,7 +68,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_NUMBER + " TEXT" + ")";
         db.execSQL(CREATE_PATIENTS_TABLE);
 
-
         String CREATE_APPOINTMENTS_TABLE = "CREATE TABLE " + TABLE_APPOINTMENTS + "("
                 + COLUMN_APPOINTMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_APPOINTMENT_DOCTOR_ID + " INTEGER,"
@@ -82,7 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_APPOINTMENTS_TABLE);
     }
 
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -92,8 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //Doctor Management
-    //Add Doctor
+    // Doctor Management
     public void addDoctor(String name, String specialisation, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -101,11 +96,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SPECIALISATION, specialisation);
         values.put(COLUMN_PHONE, phone);
 
-        db.insert(TABLE_DOCTORS, null, values);
-        db.close();
+        try {
+            db.insert(TABLE_DOCTORS, null, values);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
     }
 
-    // Update doctor
     public void updateDoctor(int id, String name, String specialisation, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -113,33 +112,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SPECIALISATION, specialisation);
         values.put(COLUMN_PHONE, phone);
 
-        db.update(TABLE_DOCTORS, values, COLUMN_DOCTOR_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
+        try {
+            db.update(TABLE_DOCTORS, values, COLUMN_DOCTOR_ID + " = ?", new String[]{String.valueOf(id)});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
     }
 
-    // Delete doctor
     public void deleteDoctor(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_DOCTORS, COLUMN_DOCTOR_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
+        try {
+            db.delete(TABLE_DOCTORS, COLUMN_DOCTOR_ID + " = ?", new String[]{String.valueOf(id)});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
     }
 
-
-
     // Patient Management
-    //Add Patient
     public void addPatient(String name, String diagnose, String number) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_DOCTOR_NAME, name);
+        values.put(COLUMN_PATIENT_NAME, name);
         values.put(COLUMN_DIAGNOSE, diagnose);
         values.put(COLUMN_NUMBER, number);
 
-        db.insert(TABLE_PATIENTS, null, values);
-        db.close();
+        try {
+            db.insert(TABLE_PATIENTS, null, values);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
     }
 
-    // Update patient
     public void updatePatient(int id, String name, String diagnose, String number) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -147,88 +156,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DIAGNOSE, diagnose);
         values.put(COLUMN_NUMBER, number);
 
-        db.update(TABLE_PATIENTS, values, COLUMN_PATIENT_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
-    }
-
-    // Delete patient
-    public void deletePatient(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PATIENTS, COLUMN_PATIENT_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
-    }
-
-
-    // Get all doctors
-    public Cursor getAllDoctors() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_DOCTORS, null);
-    }
-
-
-    // Get all patients
-    public Cursor getAllPatients() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_PATIENTS, null);
-    }
-
-
-
-
-
-    // Method to hash passwords using SHA-256
-    private String hashPassword(String password) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
+            db.update(TABLE_PATIENTS, values, COLUMN_PATIENT_ID + " = ?", new String[]{String.valueOf(id)});
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+        } finally {
+            db.close();
         }
     }
 
-
-    // Inserting Users with hashed password
-    public boolean insertUser(String username, String password) {
+    public void deletePatient(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_USERNAME, username);
-
-        // Hash the password before storing it
-        String hashedPassword = hashPassword(password);
-        contentValues.put(COLUMN_PASSWORD, hashedPassword);
-
-        long result = db.insert(TABLE_NAME, null, contentValues);
-        return result != -1;
+        try {
+            db.delete(TABLE_PATIENTS, COLUMN_PATIENT_ID + " = ?", new String[]{String.valueOf(id)});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
     }
 
-
-
-
-    // Authenticate User with hashed password
-    public boolean authenticateUser(String username, String password) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        // Hash the password before comparison
-        String hashedPassword = hashPassword(password);
-
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " +
-                COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{username, hashedPassword});
-
-        boolean result = cursor.getCount() > 0;
-        cursor.close();
-        return result;
-    }
-
-    // Add Appointment
+    // Appointment Management
     public long addAppointment(int doctorId, int patientId, String date, String time) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -250,29 +198,84 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DATE, date);
         values.put(COLUMN_TIME, time);
 
-        long result = db.insert(TABLE_APPOINTMENTS, null, values);
-        db.close();
-        return result;
+        try {
+            return db.insert(TABLE_APPOINTMENTS, null, values);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
+        return -1;
     }
 
-    // Delete Appointment
     public void deleteAppointment(int appointmentId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_APPOINTMENTS, COLUMN_APPOINTMENT_ID + " = ?", new String[]{String.valueOf(appointmentId)});
-        db.close();
+        try {
+            db.delete(TABLE_APPOINTMENTS, COLUMN_APPOINTMENT_ID + " = ?", new String[]{String.valueOf(appointmentId)});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
     }
 
-    // Get All Appointments
-    public Cursor getAppointments() {
+    // Get all doctors and patients
+    public Cursor getAllDoctors() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT a." + COLUMN_APPOINTMENT_ID + ", " +
-                "d." + COLUMN_DOCTOR_NAME + " AS doctor_name, " +
-                "p." + COLUMN_PATIENT_NAME + " AS patient_name, " +
-                "a." + COLUMN_DATE + ", a." + COLUMN_TIME +
-                " FROM " + TABLE_APPOINTMENTS + " a " +
-                "JOIN " + TABLE_DOCTORS + " d ON a." + COLUMN_APPOINTMENT_DOCTOR_ID + " = d." + COLUMN_DOCTOR_ID + " " +
-                "JOIN " + TABLE_PATIENTS + " p ON a." + COLUMN_APPOINTMENT_PATIENT_ID + " = p." + COLUMN_PATIENT_ID;
-        return db.rawQuery(query, null);
+        return db.rawQuery("SELECT * FROM " + TABLE_DOCTORS, null);
+    }
+
+    public Cursor getAllPatients() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_PATIENTS, null);
+    }
+
+    // Method to hash passwords using SHA-256
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Inserting Users with hashed password
+    public boolean insertUser(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_USERNAME, username);
+
+        // Hash the password before storing it
+        String hashedPassword = hashPassword(password);
+        contentValues.put(COLUMN_PASSWORD, hashedPassword);
+
+        long result = db.insert(TABLE_NAME, null, contentValues);
+        return result != -1;
+    }
+
+    // Authenticate User with hashed password
+    public boolean authenticateUser(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Hash the password before comparison
+        String hashedPassword = hashPassword(password);
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " +
+                COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username, hashedPassword});
+
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
     }
 
     // Helper to get doctor ID by name
@@ -304,4 +307,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return -1; // Not found
     }
+
+    // Method to get all appointments
+    public Cursor getAppointments() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT a." + COLUMN_APPOINTMENT_ID + ", " +
+                "d." + COLUMN_DOCTOR_NAME + " AS doctor_name, " +
+                "p." + COLUMN_PATIENT_NAME + " AS patient_name, " +
+                "a." + COLUMN_DATE + ", a." + COLUMN_TIME +
+                " FROM " + TABLE_APPOINTMENTS + " a " +
+                "JOIN " + TABLE_DOCTORS + " d ON a." + COLUMN_APPOINTMENT_DOCTOR_ID + " = d." + COLUMN_DOCTOR_ID + " " +
+                "JOIN " + TABLE_PATIENTS + " p ON a." + COLUMN_APPOINTMENT_PATIENT_ID + " = p." + COLUMN_PATIENT_ID;
+        return db.rawQuery(query, null);
+    }
+
+    // Check if a username already exists
+    public boolean isUserExist(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USERNAME + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return exists;
+    }
+
+
 }
