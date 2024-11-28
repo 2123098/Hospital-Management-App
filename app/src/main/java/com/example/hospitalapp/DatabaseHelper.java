@@ -128,16 +128,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Patient Management
     //Add Patient
+    // Add Patient
     public void addPatient(String name, String diagnose, String number) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_DOCTOR_NAME, name);
+        values.put(COLUMN_PATIENT_NAME, name); // Fix here
         values.put(COLUMN_DIAGNOSE, diagnose);
         values.put(COLUMN_NUMBER, number);
 
         db.insert(TABLE_PATIENTS, null, values);
         db.close();
     }
+
 
     // Update patient
     public void updatePatient(int id, String name, String diagnose, String number) {

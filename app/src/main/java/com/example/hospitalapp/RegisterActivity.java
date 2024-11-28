@@ -16,7 +16,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button register_Button;
     DatabaseHelper db;
 
-    //The password must be at least 6 characters long
+    // The password must be at least 6 characters long
     private static final int MIN_PASSWORD_LENGTH = 6;
 
     @Override
@@ -30,39 +30,40 @@ public class RegisterActivity extends AppCompatActivity {
         co_password_reg = findViewById(R.id.co_password_reg);
         register_Button = findViewById(R.id.register_Button);
 
-        //Storing Registered User to the Database
+        // Storing Registered User to the Database
         register_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = Enter_name_reg.getText().toString();
-                String password = password_Enter_reg.getText().toString();
-                String confirmPassword = co_password_reg.getText().toString();
+                String username = Enter_name_reg.getText().toString().trim();
+                String password = password_Enter_reg.getText().toString().trim();
+                String confirmPassword = co_password_reg.getText().toString().trim();
 
-                //Checking for empty fields
+                // Checking for empty fields
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
                     Toast.makeText(RegisterActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                //Checking password length
+                // Checking password length
                 if (password.length() < MIN_PASSWORD_LENGTH) {
                     Toast.makeText(RegisterActivity.this, "Password must be at least " + MIN_PASSWORD_LENGTH + " characters long", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                //Checking if passwords match
+                // Checking if passwords match
                 if (!password.equals(confirmPassword)) {
                     Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                //Inserting users into the database
+                // Inserting users into the database
                 boolean insert = db.insertUser(username, password);
                 if (insert) {
                     Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    finish();
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Registration failed. Username may already be taken.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

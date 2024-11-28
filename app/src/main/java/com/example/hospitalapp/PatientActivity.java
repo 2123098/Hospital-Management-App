@@ -47,72 +47,52 @@ public class PatientActivity extends AppCompatActivity {
         loadPatients();
 
         // Button listeners
-        add_patient_btn.setOnClickListener(v -> {
-            if (validateInputs()) {
-                String name = enter_patient_name.getText().toString().trim();
-                String diagnose = enter_diagnose.getText().toString().trim();
-                String number = enter_number.getText().toString().trim();
-
-                db.addPatient(name, diagnose, number);
-                Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show();
-                clearInputs();
-                loadPatients();
-            }
-        });
-
-        update_patient_btn.setOnClickListener(v -> {
-            if (selectedPatientId != -1 && validateInputs()) {
-                String name = enter_patient_name.getText().toString().trim();
-                String diagnose = enter_diagnose.getText().toString().trim();
-                String number = enter_number.getText().toString().trim();
-
-                db.updatePatient(selectedPatientId, name, diagnose, number);
-                Toast.makeText(this, "Patient updated successfully", Toast.LENGTH_SHORT).show();
-                clearInputs();
-                loadPatients();
-                selectedPatientId = -1;
-            } else {
-                Toast.makeText(this, "Select a patient to update", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        delete_patient_btn.setOnClickListener(v -> {
-            if (selectedPatientId != -1) {
-                db.deletePatient(selectedPatientId);
-                Toast.makeText(this, "Patient deleted successfully", Toast.LENGTH_SHORT).show();
-                clearInputs();
-                loadPatients();
-                selectedPatientId = -1;
-            } else {
-                Toast.makeText(this, "Select a patient to delete", Toast.LENGTH_SHORT).show();
-            }
-        });
+        add_patient_btn.setOnClickListener(v -> handlePatientAction("add"));
+        update_patient_btn.setOnClickListener(v -> handlePatientAction("update"));
+        delete_patient_btn.setOnClickListener(v -> handlePatientAction("delete"));
 
         patient_list_view.setOnItemClickListener((parent, view, position, id) -> {
-            Cursor cursor = db.getAllPatients();
-            if (cursor.moveToPosition(position)) {
-                selectedPatientId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_ID));
-                enter_patient_name.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_NAME)));
-                enter_diagnose.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DIAGNOSE)));
-                enter_number.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NUMBER)));
+            Cursor cursor = null;
+            try {
+                cursor = db.getAllPatients();
+                if (cursor != null && cursor.moveToPosition(position)) {
+                    selectedPatientId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_ID));
+                    enter_patient_name.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_NAME)));
+                    enter_diagnose.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DIAGNOSE)));
+                    enter_number.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NUMBER)));
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
-            cursor.close();
         });
     }
 
     private void loadPatients() {
         patientList.clear();
-        Cursor cursor = db.getAllPatients();
-        if (cursor.moveToFirst()) {
-            do {
-                String patientDetails = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_NAME)) +
-                        " - " + cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DIAGNOSE)) +
-                        " - " + cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NUMBER));
-                patientList.add(patientDetails);
-            } while (cursor.moveToNext());
+        Cursor cursor = null;
+        try {
+            cursor = db.getAllPatients();
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String patientDetails = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_PATIENT_NAME)) +
+                            " - " + cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DIAGNOSE)) +
+                            " - " + cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NUMBER));
+                    patientList.add(patientDetails);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        cursor.close();
         patientAdapter.notifyDataSetChanged();
+
+        // Display a message if no patients exist
+        if (patientList.isEmpty()) {
+            Toast.makeText(this, "No patients found", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private boolean validateInputs() {
@@ -133,6 +113,45 @@ public class PatientActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void handlePatientAction(String action) {
+        if (action.equals("add")) {
+            if (validateInputs()) {
+                String name = enter_patient_name.getText().toString().trim();
+                String diagnose = enter_diagnose.getText().toString().trim();
+                String number = enter_number.getText().toString().trim();
+
+                db.addPatient(name, diagnose, number);
+                Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show();
+                clearInputs();
+                loadPatients();
+            }
+        } else if (action.equals("update")) {
+            if (selectedPatientId != -1 && validateInputs()) {
+                String name = enter_patient_name.getText().toString().trim();
+                String diagnose = enter_diagnose.getText().toString().trim();
+                String number = enter_number.getText().toString().trim();
+
+                db.updatePatient(selectedPatientId, name, diagnose, number);
+                Toast.makeText(this, "Patient updated successfully", Toast.LENGTH_SHORT).show();
+                clearInputs();
+                loadPatients();
+                selectedPatientId = -1;
+            } else {
+                Toast.makeText(this, "Select a patient to update", Toast.LENGTH_SHORT).show();
+            }
+        } else if (action.equals("delete")) {
+            if (selectedPatientId != -1) {
+                db.deletePatient(selectedPatientId);
+                Toast.makeText(this, "Patient deleted successfully", Toast.LENGTH_SHORT).show();
+                clearInputs();
+                loadPatients();
+                selectedPatientId = -1;
+            } else {
+                Toast.makeText(this, "Select a patient to delete", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void clearInputs() {

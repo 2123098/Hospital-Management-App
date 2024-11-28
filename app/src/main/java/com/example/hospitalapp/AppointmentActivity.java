@@ -57,6 +57,7 @@ public class AppointmentActivity extends AppCompatActivity {
                 String date = dateInput.getText().toString().trim();
                 String time = timeInput.getText().toString().trim();
 
+                // Get doctor and patient IDs
                 int doctorId = db.getDoctorIdByName(doctorName);
                 int patientId = db.getPatientIdByName(patientName);
 
@@ -65,6 +66,7 @@ public class AppointmentActivity extends AppCompatActivity {
                     return;
                 }
 
+                // Add appointment
                 long result = db.addAppointment(doctorId, patientId, date, time);
                 if (result != -1) {
                     Toast.makeText(this, "Appointment scheduled successfully", Toast.LENGTH_SHORT).show();
@@ -138,8 +140,6 @@ public class AppointmentActivity extends AppCompatActivity {
                         timeInput.setText(formattedTime);
                     }, hour, minute, true).show();
         });
-
-
     }
 
     private boolean validateInputs() {

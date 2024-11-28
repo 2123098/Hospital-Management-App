@@ -16,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login_button;
     DatabaseHelper db;
 
-    //The password must be at least 6 character
+    // The password must be at least 6 characters
     private static final int MIN_PASSWORD_LENGTH = 6;
 
     @Override
@@ -32,29 +32,29 @@ public class LoginActivity extends AppCompatActivity {
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = Enter_username_log.getText().toString();
-                String password = Enter_password_log.getText().toString();
+                String username = Enter_username_log.getText().toString().trim();
+                String password = Enter_password_log.getText().toString().trim();
 
-                //Checking for empty fields
+                // Checking for empty fields
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
                     Toast.makeText(LoginActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                //Checking password length
+                // Checking password length
                 if (password.length() < MIN_PASSWORD_LENGTH) {
                     Toast.makeText(LoginActivity.this, "Password must be at least " + MIN_PASSWORD_LENGTH + " characters long", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                //Authenticating users
+                // Authenticating users
                 boolean isAuthenticated = db.authenticateUser(username, password);
                 if (isAuthenticated) {
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                     finish();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login failed. Invalid username or password.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
