@@ -54,12 +54,17 @@ public class DoctorActivity extends AppCompatActivity {
                 String specialization = enter_spec.getText().toString().trim();
                 String phone = enter_phone_number.getText().toString().trim();
 
-                db.addDoctor(name, specialization, phone);
-                Toast.makeText(this, "Doctor added successfully", Toast.LENGTH_SHORT).show();
-                clearInputs();
-                loadDoctors();
+                boolean success = db.addDoctor(name, specialization, phone);
+                if (success) {
+                    Toast.makeText(this, "Doctor added successfully", Toast.LENGTH_SHORT).show();
+                    clearInputs();
+                    loadDoctors();
+                } else {
+                    Toast.makeText(this, "Doctor already exists", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
         // Update doctor functionality
         update_doctor_btn.setOnClickListener(v -> {

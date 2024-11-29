@@ -96,8 +96,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Doctor Management
-    public void addDoctor(String name, String specialisation, String phone) {
+    public boolean addDoctor(String name, String specialisation, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        // Check if the doctor already exists
+        String query = "SELECT * FROM " + TABLE_DOCTORS + " WHERE " +
+                COLUMN_DOCTOR_NAME + " = ? AND " +
+                COLUMN_SPECIALISATION + " = ? AND " +
+                COLUMN_PHONE + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{name, specialisation, phone});
+
+        if (cursor.getCount() > 0) {
+            // Doctor already exists
+            cursor.close();
+            return false;
+        }
+
+        cursor.close();
+
+        // Proceed with adding the doctor
         ContentValues values = new ContentValues();
         values.put(COLUMN_DOCTOR_NAME, name);
         values.put(COLUMN_SPECIALISATION, specialisation);
@@ -105,12 +122,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             db.insert(TABLE_DOCTORS, null, values);
+            return true; // Doctor added successfully
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             db.close();
         }
+        return false; // Failed to add doctor
     }
+
 
     public void updateDoctor(int id, String name, String specialisation, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
