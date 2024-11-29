@@ -99,7 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addDoctor(String name, String specialisation, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Check if the doctor already exists
+        // Here, checking if the doctor already exists
         String query = "SELECT * FROM " + TABLE_DOCTORS + " WHERE " +
                 COLUMN_DOCTOR_NAME + " = ? AND " +
                 COLUMN_SPECIALISATION + " = ? AND " +
@@ -114,7 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
 
-        // Proceed with adding the doctor
+        // Proceeding with adding the doctor
         ContentValues values = new ContentValues();
         values.put(COLUMN_DOCTOR_NAME, name);
         values.put(COLUMN_SPECIALISATION, specialisation);
@@ -122,13 +122,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             db.insert(TABLE_DOCTORS, null, values);
-            return true; // Doctor added successfully
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             db.close();
         }
-        return false; // Failed to add doctor
+        return false;
     }
 
 
@@ -163,7 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addPatient(String name, String diagnose, String number) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Check if the patient already exists
+        // Also, checking if the patient already exists
         String query = "SELECT * FROM " + TABLE_PATIENTS + " WHERE " +
                 COLUMN_PATIENT_NAME + " = ? AND " +
                 COLUMN_DIAGNOSE + " = ? AND " +
@@ -186,13 +186,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             db.insert(TABLE_PATIENTS, null, values);
-            return true; // Patient added successfully
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             db.close();
         }
-        return false; // Failed to add patient
+        return false;
     }
 
 
@@ -227,7 +227,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long addAppointment(int doctorId, int patientId, String date, String time) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Check for scheduling conflicts
+        // Checking for scheduling conflicts
         String query = "SELECT * FROM " + TABLE_APPOINTMENTS +
                 " WHERE " + COLUMN_APPOINTMENT_DOCTOR_ID + " = ? AND " +
                 COLUMN_DATE + " = ? AND " + COLUMN_TIME + " = ?";
@@ -235,7 +235,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.getCount() > 0) {
             cursor.close();
-            return -1; // Conflict found
+            return -1;
         }
         cursor.close();
 
@@ -277,7 +277,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_PATIENTS, null);
     }
 
-    // Method to hash passwords using SHA-256
+    // This is the method to hash passwords using SHA-256
     private String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -337,7 +337,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             return id;
         }
-        return -1; // Not found
+        return -1;
     }
 
     // Helper to get patient ID by name
@@ -352,7 +352,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             return id;
         }
-        return -1; // Not found
+        return -1;
     }
 
     // Method to get all appointments
@@ -368,7 +368,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    // Check if a username already exists
+    // Checking if a username already exists
     public boolean isUserExist(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USERNAME + " = ?";

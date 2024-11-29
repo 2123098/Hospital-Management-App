@@ -30,7 +30,7 @@ public class DoctorActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        // Initialize UI components
+        // These are the UI components
         doctor_list_view = findViewById(R.id.doctor_list_view);
         enter_doctor_name = findViewById(R.id.enter_doctor_name);
         enter_spec = findViewById(R.id.enter_spec);
@@ -39,15 +39,15 @@ public class DoctorActivity extends AppCompatActivity {
         update_doctor_btn = findViewById(R.id.update_doctor_btn);
         delete_doctor_btn = findViewById(R.id.delete_doctor_btn);
 
-        // Initialize doctor list and adapter
+        // Doctor list and adapter
         doctorList = new ArrayList<>();
         doctorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, doctorList);
         doctor_list_view.setAdapter(doctorAdapter);
 
-        // Load existing doctors into the ListView
+        // Loading existing doctors into the ListView
         loadDoctors();
 
-        // Add doctor functionality
+        // Adding doctor functionality
         add_doctor_btn.setOnClickListener(v -> {
             if (validateInputs()) {
                 String name = enter_doctor_name.getText().toString().trim();
@@ -66,7 +66,7 @@ public class DoctorActivity extends AppCompatActivity {
         });
 
 
-        // Update doctor functionality
+        // Updating doctor functionality
         update_doctor_btn.setOnClickListener(v -> {
             if (selectedDoctorId != -1) {
                 if (validateInputs()) {
@@ -78,27 +78,27 @@ public class DoctorActivity extends AppCompatActivity {
                     Toast.makeText(this, "Doctor updated successfully", Toast.LENGTH_SHORT).show();
                     clearInputs();
                     loadDoctors();
-                    selectedDoctorId = -1; // Reset selected doctor ID
+                    selectedDoctorId = -1;
                 }
             } else {
                 Toast.makeText(this, "Please select a doctor to update", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Delete doctor functionality
+        // Deleting doctor functionality
         delete_doctor_btn.setOnClickListener(v -> {
             if (selectedDoctorId != -1) {
                 db.deleteDoctor(selectedDoctorId);
                 Toast.makeText(this, "Doctor deleted successfully", Toast.LENGTH_SHORT).show();
                 clearInputs();
                 loadDoctors();
-                selectedDoctorId = -1; // Reset selected doctor ID
+                selectedDoctorId = -1;
             } else {
                 Toast.makeText(this, "Please select a doctor to delete", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Handle doctor selection from ListView
+        // Handling doctor selection from ListView
         doctor_list_view.setOnItemClickListener((parent, view, position, id) -> {
             Cursor cursor = db.getAllDoctors();
             if (cursor.moveToPosition(position)) {
@@ -111,7 +111,7 @@ public class DoctorActivity extends AppCompatActivity {
         });
     }
 
-    // Method to validate input fields
+    // Here, using this method to validate input fields
     private boolean validateInputs() {
         String name = enter_doctor_name.getText().toString().trim();
         String specialization = enter_spec.getText().toString().trim();
@@ -122,7 +122,7 @@ public class DoctorActivity extends AppCompatActivity {
             return false;
         }
         if (TextUtils.isEmpty(specialization)) {
-            enter_spec.setError("Specialization is required");
+            enter_spec.setError("Specialisation is required");
             return false;
         }
         if (TextUtils.isEmpty(phone) || !phone.matches("\\d{10}")) {
@@ -132,17 +132,17 @@ public class DoctorActivity extends AppCompatActivity {
         return true;
     }
 
-    // Method to load doctors from the database into the ListView
+    // Here too using this method to load doctors from the database into the ListView
     private void loadDoctors() {
         doctorList.clear();
         Cursor cursor = db.getAllDoctors();
         if (cursor.moveToFirst()) {
             do {
                 String doctorName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DOCTOR_NAME));
-                String specialization = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SPECIALISATION));
+                String specialisation = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SPECIALISATION));
                 String phone = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_PHONE));
 
-                doctorList.add(doctorName + " - " + specialization + " - " + phone);
+                doctorList.add(doctorName + " - " + specialisation + " - " + phone);
             } while (cursor.moveToNext());
         }
         cursor.close();
