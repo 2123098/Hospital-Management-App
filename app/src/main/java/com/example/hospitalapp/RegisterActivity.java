@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Registration failed. Try again later.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    // Handle any SQLite errors during registration
+                    // This handle any SQLite errors during registration
                     Toast.makeText(RegisterActivity.this, "An error occurred during registration. Please try again.", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }

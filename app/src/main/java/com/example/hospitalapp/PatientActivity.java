@@ -30,7 +30,7 @@ public class PatientActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        // Initialize UI components
+        // The UI components
         enter_patient_name = findViewById(R.id.enter_patient_name);
         enter_diagnose = findViewById(R.id.enter_diagnose);
         enter_number = findViewById(R.id.enter_number);
@@ -46,7 +46,7 @@ public class PatientActivity extends AppCompatActivity {
 
         loadPatients();
 
-        // Button listeners
+        // These are the the button listeners
         add_patient_btn.setOnClickListener(v -> handlePatientAction("add"));
         update_patient_btn.setOnClickListener(v -> handlePatientAction("update"));
         delete_patient_btn.setOnClickListener(v -> handlePatientAction("delete"));
@@ -89,7 +89,7 @@ public class PatientActivity extends AppCompatActivity {
         }
         patientAdapter.notifyDataSetChanged();
 
-        // Display a message if no patients exist
+        // Displaying a message if no patients exist
         if (patientList.isEmpty()) {
             Toast.makeText(this, "No patients found", Toast.LENGTH_SHORT).show();
         }
@@ -115,7 +115,7 @@ public class PatientActivity extends AppCompatActivity {
         return true;
     }
 
-    // In PatientActivity class
+    // Handling patient action
     private void handlePatientAction(String action) {
         if (action.equals("add")) {
             if (validateInputs()) {

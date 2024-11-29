@@ -325,7 +325,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    // Helper to get doctor ID by name
+    // Using helper to get doctor ID by name
     public int getDoctorIdByName(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_DOCTORS, new String[]{COLUMN_DOCTOR_ID},
@@ -340,7 +340,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    // Helper to get patient ID by name
+    // Using same approach here, helper to get patient ID by name
     public int getPatientIdByName(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_PATIENTS, new String[]{COLUMN_PATIENT_ID},
@@ -355,7 +355,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    // Method to get all appointments
+    // This is the method to get all appointments
     public Cursor getAppointments() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT a." + COLUMN_APPOINTMENT_ID + ", " +

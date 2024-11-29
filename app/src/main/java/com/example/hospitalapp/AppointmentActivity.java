@@ -33,7 +33,7 @@ public class AppointmentActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        // Initialize UI components
+        // These are the UI components
         doctorIdInput = findViewById(R.id.doctorIdInput);
         patientIdInput = findViewById(R.id.patientIdInput);
         dateInput = findViewById(R.id.dateInput);
@@ -42,14 +42,14 @@ public class AppointmentActivity extends AppCompatActivity {
         deleteAppointmentButton = findViewById(R.id.deleteAppointmentButton);
         appointmentListView = findViewById(R.id.appointmentListView);
 
-        // Initialize appointment list and adapter
+        // The appointment list and adapter
         appointmentList = new ArrayList<>();
         appointmentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, appointmentList);
         appointmentListView.setAdapter(appointmentAdapter);
 
         loadAppointments();
 
-        // Schedule Appointment
+        // Scheduling Appointment
         scheduleButton.setOnClickListener(v -> {
             if (validateInputs()) {
                 String doctorName = doctorIdInput.getText().toString().trim();
@@ -66,7 +66,7 @@ public class AppointmentActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Add appointment
+                // Adding appointment
                 long result = db.addAppointment(doctorId, patientId, date, time);
                 if (result != -1) {
                     Toast.makeText(this, "Appointment scheduled successfully", Toast.LENGTH_SHORT).show();
@@ -78,7 +78,7 @@ public class AppointmentActivity extends AppCompatActivity {
             }
         });
 
-        // Delete Appointment
+        // Deleting Appointment
         deleteAppointmentButton.setOnClickListener(v -> {
             if (selectedAppointmentId != -1) {
                 db.deleteAppointment(selectedAppointmentId);
@@ -108,7 +108,7 @@ public class AppointmentActivity extends AppCompatActivity {
             cursor.close();
         });
 
-        // Date picker dialog for date input
+        // This is the date picker dialog for date input
         dateInput.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
@@ -122,7 +122,7 @@ public class AppointmentActivity extends AppCompatActivity {
                     }, year, month, day).show();
         });
 
-        // Time picker dialog for time input
+        // Here, doing same for time picker dialog for time input
         timeInput.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);

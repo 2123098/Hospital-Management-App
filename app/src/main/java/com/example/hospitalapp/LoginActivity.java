@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    // Handle any SQLite errors
+                    // This is to help handle any SQLite errors
                     Toast.makeText(LoginActivity.this, "An error occurred during login. Please try again.", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
