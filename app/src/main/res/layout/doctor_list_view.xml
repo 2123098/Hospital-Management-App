@@ -7,18 +7,21 @@
 
 
 
+    <!-- Doctor Name -->
     <TextView
         android:id="@+id/doctor_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Doctor Name" />
 
+    <!-- Doctor Specialisation -->
     <TextView
         android:id="@+id/specialisation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Specialisation" />
 
+    <!-- Doctor Phone -->
     <TextView
         android:id="@+id/phone"
         android:layout_width="wrap_content"
