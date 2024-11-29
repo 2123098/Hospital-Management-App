@@ -115,6 +115,7 @@ public class PatientActivity extends AppCompatActivity {
         return true;
     }
 
+    // In PatientActivity class
     private void handlePatientAction(String action) {
         if (action.equals("add")) {
             if (validateInputs()) {
@@ -122,10 +123,15 @@ public class PatientActivity extends AppCompatActivity {
                 String diagnose = enter_diagnose.getText().toString().trim();
                 String number = enter_number.getText().toString().trim();
 
-                db.addPatient(name, diagnose, number);
-                Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show();
-                clearInputs();
-                loadPatients();
+                boolean isAdded = db.addPatient(name, diagnose, number);
+
+                if (isAdded) {
+                    Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show();
+                    clearInputs();
+                    loadPatients();
+                } else {
+                    Toast.makeText(this, "Patient already exists", Toast.LENGTH_SHORT).show();
+                }
             }
         } else if (action.equals("update")) {
             if (selectedPatientId != -1 && validateInputs()) {
@@ -153,6 +159,7 @@ public class PatientActivity extends AppCompatActivity {
             }
         }
     }
+
 
     private void clearInputs() {
         enter_patient_name.setText("");

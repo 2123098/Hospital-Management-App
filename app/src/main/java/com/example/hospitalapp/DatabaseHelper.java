@@ -160,8 +160,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Patient Management
-    public void addPatient(String name, String diagnose, String number) {
+    public boolean addPatient(String name, String diagnose, String number) {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        // Check if the patient already exists
+        String query = "SELECT * FROM " + TABLE_PATIENTS + " WHERE " +
+                COLUMN_PATIENT_NAME + " = ? AND " +
+                COLUMN_DIAGNOSE + " = ? AND " +
+                COLUMN_NUMBER + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{name, diagnose, number});
+
+        if (cursor.getCount() > 0) {
+            // Patient already exists
+            cursor.close();
+            return false;
+        }
+
+        cursor.close();
+
+        // Proceed with adding the patient
         ContentValues values = new ContentValues();
         values.put(COLUMN_PATIENT_NAME, name);
         values.put(COLUMN_DIAGNOSE, diagnose);
@@ -169,12 +186,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             db.insert(TABLE_PATIENTS, null, values);
+            return true; // Patient added successfully
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             db.close();
         }
+        return false; // Failed to add patient
     }
+
 
     public void updatePatient(int id, String name, String diagnose, String number) {
         SQLiteDatabase db = this.getWritableDatabase();
