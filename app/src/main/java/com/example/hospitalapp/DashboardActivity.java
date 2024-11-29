@@ -4,13 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-
 import androidx.appcompat.app.AppCompatActivity;
 
-
 public class DashboardActivity extends AppCompatActivity {
-
 
     Button btn_Manage_Doctors, btn_Manage_Patients, btn_schedule_appointment, btn_view_appointments;
 
@@ -18,7 +14,6 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
 
         // Open Doctor Management
         btn_Manage_Doctors = findViewById(R.id.btn_Manage_Doctors);
@@ -40,13 +35,22 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-
         // Open Appointment Management
         btn_schedule_appointment = findViewById(R.id.btn_schedule_appointment);
         btn_schedule_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, AppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Open View Appointments
+        btn_view_appointments = findViewById(R.id.btn_view_appointments);
+        btn_view_appointments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, ViewAppointmentsActivity.class);
                 startActivity(intent);
             }
         });
