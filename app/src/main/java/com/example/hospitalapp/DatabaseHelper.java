@@ -88,6 +88,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        db.execSQL("PRAGMA foreign_keys=ON;");
+    }
+
+
     // Doctor Management
     public void addDoctor(String name, String specialisation, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
