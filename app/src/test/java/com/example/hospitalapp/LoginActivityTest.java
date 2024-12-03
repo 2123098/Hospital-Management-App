@@ -31,6 +31,6 @@ public class LoginActivityTest {
 
     @Test
     public void tearDown() {
-        System.out.println("Done with testing");
+        System.out.println("Unit testing done");
     }
 }
