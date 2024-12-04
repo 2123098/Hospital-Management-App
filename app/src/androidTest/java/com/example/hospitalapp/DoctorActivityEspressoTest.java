@@ -57,7 +57,7 @@ public class DoctorActivityEspressoTest {
     @Test
     public void testUpdateDoctorButton() {
 
-        // Add a doctor to ensure there is one to update
+        // Add doctor
         testAddDoctorButton();
 
         // Selecting doctor in the ListView
