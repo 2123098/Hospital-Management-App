@@ -47,7 +47,7 @@ public class PatientActivityEspressoTest {
         // Verifying if new patient appears in the ListView
         onData(anything())
                 .inAdapterView(withId(R.id.patient_list_view))
-                .atPosition(0) // The new patient should appear at the first position
+                .atPosition(0)
                 .check(matches(isDisplayed()));
     }
 
@@ -96,7 +96,7 @@ public class PatientActivityEspressoTest {
 
         // Verifying that the ListView no longer displays the deleted patient
         onView(withId(R.id.patient_list_view))
-                .check(matches(ViewMatchers.hasChildCount(0))); // ListView should be empty
+                .check(matches(ViewMatchers.hasChildCount(0)));
     }
 
 
@@ -132,7 +132,7 @@ public class PatientActivityEspressoTest {
         onView(withId(R.id.enter_number))
                 .perform(typeText("abc123"), closeSoftKeyboard());
 
-        // Clicking Add Patient button
+        // Add Patient button
         onView(withId(R.id.add_patient_btn)).perform(click());
 
         // When the patient is NOT added
