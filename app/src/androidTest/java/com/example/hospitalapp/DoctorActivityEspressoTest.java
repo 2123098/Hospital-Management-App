@@ -68,9 +68,9 @@ public class DoctorActivityEspressoTest {
 
         // Updating the doctor's details
         onView(withId(R.id.enter_doctor_name))
-                .perform(typeText("Updated Dr. Paul"), closeSoftKeyboard());
+                .perform(typeText("Dr. Paul Paul"), closeSoftKeyboard());
         onView(withId(R.id.enter_spec))
-                .perform(typeText("Updated Cardiologist"), closeSoftKeyboard());
+                .perform(typeText("Dentist"), closeSoftKeyboard());
         onView(withId(R.id.enter_phone_number))
                 .perform(typeText("9876543210"), closeSoftKeyboard());
 

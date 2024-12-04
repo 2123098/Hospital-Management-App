@@ -64,7 +64,7 @@ public class PatientActivityEspressoTest {
 
         // Updating the patient's details
         onView(withId(R.id.enter_patient_name))
-                .perform(typeText("Updated Siaw"), closeSoftKeyboard());
+                .perform(typeText("Siaw Paul"), closeSoftKeyboard());
         onView(withId(R.id.enter_diagnose))
                 .perform(typeText("Cold"), closeSoftKeyboard());
         onView(withId(R.id.enter_number))
@@ -98,4 +98,46 @@ public class PatientActivityEspressoTest {
         onView(withId(R.id.patient_list_view))
                 .check(matches(ViewMatchers.hasChildCount(0))); // ListView should be empty
     }
+
+
+    @Test
+    public void testEmptyPatientName() {
+        // Leaving patient name empty
+        onView(withId(R.id.enter_patient_name))
+                .perform(typeText(""), closeSoftKeyboard());
+
+        // Filling valid diagnosis and phone number
+        onView(withId(R.id.enter_diagnose))
+                .perform(typeText("Flu"), closeSoftKeyboard());
+        onView(withId(R.id.enter_number))
+                .perform(typeText("1234567890"), closeSoftKeyboard());
+
+        // Trying clicking Add Patient button
+        onView(withId(R.id.add_patient_btn)).perform(click());
+
+        // when the patient is NOT added
+        onView(withId(R.id.patient_list_view))
+                .check(matches(ViewMatchers.hasChildCount(0)));
+    }
+
+    @Test
+    public void testInvalidPhoneNumberFormat() {
+        // Filling valid name and diagnosis
+        onView(withId(R.id.enter_patient_name))
+                .perform(typeText("Ronald"), closeSoftKeyboard());
+        onView(withId(R.id.enter_diagnose))
+                .perform(typeText("Flu"), closeSoftKeyboard());
+
+        // Checking when entered invalid phone number
+        onView(withId(R.id.enter_number))
+                .perform(typeText("abc123"), closeSoftKeyboard());
+
+        // Clicking Add Patient button
+        onView(withId(R.id.add_patient_btn)).perform(click());
+
+        // When the patient is NOT added
+        onView(withId(R.id.patient_list_view))
+                .check(matches(ViewMatchers.hasChildCount(0)));
+    }
+
 }
