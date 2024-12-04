@@ -44,4 +44,9 @@ dependencies {
     androidTestImplementation ("androidx.test.ext:junit:1.2.1")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.6.1")
 
+    // Mockito dependencies
+    testImplementation("org.mockito:mockito-core:3.12.4")
+    androidTestImplementation("org.mockito:mockito-android:3.12.4")
+    testImplementation("org.robolectric:robolectric:4.5.1")
+
 }
