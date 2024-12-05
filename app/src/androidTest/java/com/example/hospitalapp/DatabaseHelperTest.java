@@ -117,7 +117,7 @@ public class DatabaseHelperTest {
             onView(withId(R.id.add_doctor_btn)).perform(click());
 
             // Update the ListView
-            Espresso.onIdle();  // Ensures UI updates are completed before verifying
+            Espresso.onIdle();
 
             // Verifying if new doctor appears in the ListView
             onData(anything())
