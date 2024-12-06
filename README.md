@@ -5,5 +5,5 @@ Manage Doctor: This page allow you to add, update and delete a doctor. Notice, a
 Manage Patient: This activity aslo allows you to add, update and delete a patient with similar logic all fields must be completed be a patient can be added succefully.
 Schedule Appointments is where you can book an appointment with a doctor. Firstly you must enter the doctors name followed by patient name but make sure that both are added on the app else 
 there will be a message that invalid doctor or patient name since they are not recorded in the database.
-Also you delete appointment by selecting it and clicking on the delete button. The app will not allow users to book the same appointment at the same time and date.
+Also you delete appointment by selecting it and clicking on the delete button. The app will not allow users to book the same appointment at the same time and date in oder to prevent schedule conflict.
 And lastly, the View Appointments. This is where all booked appoinment appear. 
