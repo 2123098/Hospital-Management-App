@@ -31,7 +31,8 @@ Test Short Password to check passwords validation. Meaning passwords less than 6
 Test Passwords Match to make sure that password and confirm password are the same.
 Test Username Existence to verify if the username already exists in the database.
 
-JUnit testing was done to know how activities, classes and methods works as they are supposed to do. Some of the test cases are:
+Several JUnit testing was done but only few test cases will be discuss here. This testing was done to know how 
+the activities, classes and methods works as they are supposed to do. Some of the test cases are:
 Add Doctor Button Test checking if a doctor is successfully added to the list.
 Update Doctor Button Test checking if doctor's details can be updated successfully.
 Delete Doctor Button Test checking if a doctor can be deleted from the list.
